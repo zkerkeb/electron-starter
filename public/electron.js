@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, ipcMain, contextBridge, ipcRenderer  } = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -13,6 +13,14 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+  });
+
+
+  ipcMain.on('get-system-info', (event) => {
+    event.reply('system-info', {
+      platform: process.platform,
+      version: process.version
+    });
   });
 
   // In production, set the initial browser path to the local bundle generated
@@ -48,14 +56,16 @@ function setupLocalFilesNormalizerProxy() {
   );
 }
 
+
 // This method will be called when Electron has finished its initialization and
 // is ready to create the browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
   setupLocalFilesNormalizerProxy();
-
+ 
   app.on("activate", function () {
+    
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
