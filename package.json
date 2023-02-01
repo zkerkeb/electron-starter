@@ -1,67 +1,77 @@
 {
-  "name":"electron",
-  "version":"0.1.0",
-  "main":"./public/electron.js",
-  "author": "Zakaria Kerkeb",
-  "description": "Mettez la description de l'app ici",
-  "homepage":"./",
-  "private":true,
-  "dependencies":{
-     "@testing-library/jest-dom":"^5.16.5",
-     "@testing-library/react":"^13.4.0",
-     "@testing-library/user-event":"^13.5.0",
-     "react":"^18.2.0",
-     "react-dom":"^18.2.0",
-     "react-scripts":"5.0.1",
-     "web-vitals":"^2.1.4"
-  },
-  "scripts":{
-     "start":"react-scripts start",
-     "build":"react-scripts build",
-     "test":"react-scripts test",
-     "eject":"react-scripts eject",
-     "electron:start":"concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
-     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
-     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-     "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
-  },
-  "eslintConfig":{
-     "extends":[
-        "react-app",
-        "react-app/jest"
-     ]
-  },
-  "browserslist":{
-     "production":[
-        "last 1 electron version"
-     ],
-     "development":[
-        "last 1 electron version"
-     ]
-  },
-  "devDependencies":{
-     "concurrently":"^7.6.0",
-     "cross-env":"^7.0.3",
-     "electron":"^22.1.0",
-     "electron-builder":"^23.6.0",
-     "electronmon":"^2.0.2",
-     "wait-on":"^7.0.1"
-  },
-  "build": {
-    "appId": "com.electron.myapp",
-    "productName": "My Electron App",
-    "files": ["build/**/*", "node_modules/**/*"],
-    "directories": {
-      "buildResources": "public"
-    },
-    "mac": {
-      "target": "dmg"
-    },
-    "win": {
-      "target": "nsis"
-    },
-    "linux": {
-      "target": "deb"
-    }
-  }
+   "name": "electron",
+   "version": "0.1.0",
+   "main": "./public/electron.js",
+   "author": "Zakaria Kerkeb",
+   "description": "Mettez la description de l'app ici",
+   "homepage": "./",
+   "private": true,
+   "dependencies": {
+      "@testing-library/jest-dom": "^5.16.5",
+      "@testing-library/react": "^13.4.0",
+      "@testing-library/user-event": "^13.5.0",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-scripts": "5.0.1",
+      "styled-components": "^5.3.6",
+      "web-vitals": "^2.1.4"
+   },
+   "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject",
+      "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electronmon .\"",
+      "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+      "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
+      "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+   },
+   "eslintConfig": {
+      "extends": [
+         "react-app",
+         "react-app/jest"
+      ]
+   },
+   "browserslist": {
+      "production": [
+         "last 1 electron version"
+      ],
+      "development": [
+         "last 1 electron version"
+      ]
+   },
+   "devDependencies": {
+      "@babel/eslint-parser": "^7.19.1",
+      "babel-eslint": "^10.1.0",
+      "concurrently": "^7.6.0",
+      "cross-env": "^7.0.3",
+      "electron": "^22.1.0",
+      "electron-builder": "^23.6.0",
+      "electronmon": "^2.0.2",
+      "eslint-config-prettier": "^8.3.0",
+      "eslint-plugin-prettier": "^4.0.0",
+      "eslint-plugin-react": "^7.26.1",
+      "prettier-eslint": "^13.0.0",
+      "wait-on": "^7.0.1"
+   },
+   "build": {
+      "appId": "com.electron.myapp",
+      "productName": "My Electron App",
+      "files": [
+         "build/**/*",
+         "node_modules/**/*"
+      ],
+      "directories": {
+         "buildResources": "public"
+      },
+      "mac": {
+         "target": "dmg"
+      },
+      "win": {
+         "target": "nsis"
+      },
+      "linux": {
+         "target": "deb"
+      }
+   }
 }

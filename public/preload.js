@@ -13,6 +13,8 @@ process.once("loaded", () => {
       doThing: 42,
       requestSystemInfo: () => ipcRenderer.send('get-system-info'),
       getSystemInfo: (setState) => ipcRenderer.on('system-info', (event, info) => {
+      console.log("🚀 ~ file: preload.js:19 ~ getSystemInfo: ~ info", info)
+        
         setState(info);
         }),
       cleanSystemInfo: () => ipcRenderer.removeAllListeners('system-info')

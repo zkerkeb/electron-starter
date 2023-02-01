@@ -15,13 +15,21 @@ function createWindow() {
     },
   });
 
-
-  ipcMain.on('get-system-info', (event) => {
-    event.reply('system-info', {
-      platform: process.platform,
-      version: process.version
-    });
+  /* Here is the explanation for the code above:
+1. The ipcMain.on() method listens to the 'get-system-info' event.
+2. It then replies to that event with the 'system-info' event and passes some data in the form of an object.
+3. The process.platform and process.version properties are used to get the platform and version of the operating system. */
+ipcMain.on('get-system-info', (event) => {
+  event.reply('system-info', {
+    platform: process.platform,
+    version: process.version, 
+    cpuUsage: process.getCPUUsage(),
+    memoryUsage: process.getSystemMemoryInfo(),
+    systemVersion: process.getSystemVersion(),
   });
+});
+
+
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
@@ -99,3 +107,5 @@ app.on("web-contents-created", (event, contents) => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
