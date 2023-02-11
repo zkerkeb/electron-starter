@@ -1,12 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const {
-  app,
-  BrowserWindow,
-  protocol,
-  ipcMain,
-  contextBridge,
-  ipcRenderer
-} = require('electron')
+const { app, BrowserWindow, protocol, ipcMain } = require('electron')
 const path = require('path')
 const url = require('url')
 
@@ -18,10 +11,10 @@ function createWindow() {
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
     }
   })
-
   /* Here is the explanation for the code above:
 1. The ipcMain.on() method listens to the 'get-system-info' event.
 2. It then replies to that event with the 'system-info' event and passes some data in the form of an object.
@@ -35,6 +28,8 @@ function createWindow() {
       systemVersion: process.getSystemVersion()
     })
   })
+  // workaround for windows 10 notifications
+  app.setAppUserModelId(process.execPath)
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.

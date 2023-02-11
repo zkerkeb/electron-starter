@@ -9,6 +9,10 @@ process.once('loaded', () => {
   contextBridge.exposeInMainWorld('versions', process.versions)
   contextBridge.exposeInMainWorld('electron', {
     doThing: 42,
+    alertNotification: () =>
+      new Notification('Vous utilisez plus de 80% de la ram', {
+        body: "Mefiez vous, c'est un conseil d'ami que je vous donne"
+      }),
     requestSystemInfo: () => ipcRenderer.send('get-system-info'),
     getSystemInfo: setState =>
       ipcRenderer.on('system-info', (event, info) => {

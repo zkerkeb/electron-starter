@@ -1,17 +1,12 @@
-import logo from './logo.svg';     
-import './App.css'; 
-import { useEffect, useState } from 'react';  
+import logo from './logo.svg'
+import './App.css'
+import { useEffect, useState } from 'react'
 import Dashboard from './components/dashboard'
-   
-function App() { 
+
+function App() {
   console.log('electron', window.electron)
 
- 
-  return (
-    <Dashboard/> 
-      
-    );
+  return <Dashboard />
 }
 
-export default App;
-  
+export default App
