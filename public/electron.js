@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, ipcMain,dialog } = require("electron");
 const path = require("path");
 const url = require("url");
 
@@ -15,6 +15,23 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+
+    ipcMain.on('open-file-dialog', event => {
+      dialog
+        .showOpenDialog(mainWindow, {
+          properties: ['openFile'],
+          filters: [
+            { name: 'Sound', extensions: ['mp3'] }]
+        })
+        .then(result => {
+          event.reply('selected-file', result.filePaths[0]) 
+         
+        })
+        .catch(err => {
+          console.log(err)
+          dialog.showErrorBox('Error', 'Something went wrong')
+        })
+    })
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
@@ -32,6 +49,26 @@ function createWindow() {
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
+}
+
+/* Here is the explanation for the code above:
+1. First, the protocol is registered using the registerFileProtocol method.
+2. The callback function is invoked with a URL that is provided as a parameter.
+3. The URL is then used to load the file that is available on the local machine. */
+// Register a custom protocol for loading local files.
+const localFileProtocol =  () => {
+  const protocolName = 'safe-file'
+  // https://www.electronjs.org/fr/docs/latest/api/protocol#protocolregisterfileprotocolscheme-handler
+  protocol.registerFileProtocol(protocolName, (request, callback) => {
+    const url = request.url.replace(`${protocolName}://`, '')
+    try {
+      return callback(decodeURIComponent(url))
+    }
+    catch (error) {
+      // Handle the error as needed
+      console.error(error)
+    }
+  })
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading
@@ -55,6 +92,7 @@ function setupLocalFilesNormalizerProxy() {
 app.whenReady().then(() => {
   createWindow();
   setupLocalFilesNormalizerProxy();
+  localFileProtocol();
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the

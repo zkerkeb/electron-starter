@@ -1,23 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
+import DialogButton from './components/dialogButton';
+import { useEffect, useState } from 'react';
 
-function App() {
+function App() { 
+  const [filePath, setFile] = useState()
+  
+  const openDialog = () => {
+  window.dialog.open();
+  window.dialog.getFilePath(setFile);
+}
+  useEffect(() => {
+    return () => {
+      window.dialog.removeEventListener();
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(filePath)
+  }, [filePath])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <DialogButton onClick={openDialog}></DialogButton>
+      <audio  src={filePath} controls></audio>
     </div>
   );
 }
