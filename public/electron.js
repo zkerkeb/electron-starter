@@ -1,10 +1,20 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
+const { desktopCapturer,systemPreferences} = require('electron')
+
+ipcMain.on('GET_STATUS', (event, arg) => {
+  event.reply('SET_STATUS', {
+      screen: systemPreferences.getMediaAccessStatus('screen'),
+      microphone: systemPreferences.getMediaAccessStatus('microphone'),
+      camera: systemPreferences.getMediaAccessStatus('camera')
+    })
+})
+
 
 // Create the native browser window.
-function createWindow() {
+function createWindow() { 
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -15,6 +25,12 @@ function createWindow() {
       nodeIntegration: true,
     },
   });
+
+  ipcMain.on('GET_SOURCES', async (event, arg) => {
+  desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+        event.reply('ALL_SOURCES', sources)
+  })
+})
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
